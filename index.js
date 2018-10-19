@@ -27,7 +27,6 @@ var server = http.createServer(function(req,res) {
 	var decoder = new StringDecoder('utf-8');
 	var buffer = '';
 
-
 	// When request 'data' event is triggered
 	// Note: the on.data event must be called whether used or not
 	req.on('data', function(data) {
@@ -36,6 +35,7 @@ var server = http.createServer(function(req,res) {
 
 	// When request 'end' event is triggered
 	req.on('end', function() {
+
 		console.log('Incoming payload: ' + buffer);
 		
 		// Figure out the chosen handlers from the request path
@@ -52,9 +52,9 @@ var server = http.createServer(function(req,res) {
 		chosenRouteHandler(data, function(statusCode, payload) {
 			
 			// Route status code or default
-			statusCode = typeof(statusCode) == 'number' ? statusCode : 406;
+			statusCode = typeof(statusCode) == 'number' ? statusCode : 200;
 			
-			// Payload or empty object
+			// Set up the return payload or an empty object if none
 			payload = typeof(payload) == 'object' ? payload : {};
 			payload.incomingMessage = buffer;
 			var payloadString = JSON.stringify(payload);
